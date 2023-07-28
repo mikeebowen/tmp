@@ -19,7 +19,7 @@ jobs:
           shell: pwsh
           run: >
             echo ${{ github.event_name }}
-            echo ${{ github.event }}
+            echo ${{ startsWith(github.ref, 'refs/tags/v') }}
         # - name: Download and Extract Artifacts from build
         #   uses: dawidd6/action-download-artifact@v2
         #   with:
