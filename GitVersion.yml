@@ -11,5 +11,7 @@ branches:
     tag: DONOTUSE
     increment: None
     is-release-branch: true
+    source-branches:
+      - test
 ignore:
   sha: []
