@@ -12,9 +12,15 @@ jobs:
     deploy:
       name: "Deploy Packages to Nuget"
 #       if: github.event.workflow_run.conclusion == 'success' && github.event_name == 'release'      
-      if: github.event.workflow_run.conclusion == 'success' && ( github.event_name == 'release' || github.event.release.prerelease )
+      if: github.event.workflow_run.conclusion == 'success'
       runs-on: ubuntu-latest
       steps:
+        - name: "Log Values"
+          shell: pwsh
+          run: >
+            echo ${{ github.event_name }}
+            echo ${{ github.event.release }}
+            echo ${{ github.event.release.prerelease }}
         # - name: Download and Extract Artifacts from build
         #   uses: dawidd6/action-download-artifact@v2
         #   with:
