@@ -14,19 +14,21 @@ jobs:
       runs-on: ubuntu-latest
       if: github.event.workflow_run.conclusion == 'success'
       steps:
-        - name: Download Release Info
-          uses: actions/download-artifact@v3
-          with:
-            name: releaseInfo
-        - name: Check for Release
-          shell: pwsh
-          run: >
+      - name: Download Release Info
+        uses: dawidd6/action-download-artifact@v2
+        with:
+         run_id: ${{ github.event.workflow_run.id }}
+         name: releaseInfo
+         path: release-info.txt
+         run: >
             $isRelease = release-info.txt
             $uri = [uri]::EscapeUriString("https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel")
+            echo "isRelease = "
+            echo $isRelease
             echo "uri = " 
             echo $uri
             $token = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":${{ github.TOKEN }}"))
-            
+
             if ($isRelease != "true") {
                 $res = Invoke-WebRequest -Headers @{"Authorization" = "Bearer $token" "Accept" = "application/vnd.github+json" "X-GitHub-Api-Version" = "2022-11-28"} -Uri $uri
             }
