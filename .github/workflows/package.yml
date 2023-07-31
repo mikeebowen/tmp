@@ -111,7 +111,7 @@ jobs:
 
   releaseInfo:
     name: Release Info
-    needs: sign
+    needs: [sign]
     runs-on: windows-latest
     steps:
       - name: Get Release Info
