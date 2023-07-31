@@ -24,20 +24,8 @@ jobs:
         shell: pwsh
         run: >
             $isRelease = Get-Content ./release-info.txt
-            $uri = [uri]::EscapeUriString("https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel")
             echo "isRelease = "
             echo $isRelease
-            echo "uri = " 
-            echo $uri
-            $token = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":${{ github.TOKEN }}"))
-            $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
-            $headers.Add('Authorization', 'Bearer $token')
-            $headers.Add('Accept', 'application/vnd.github+json')
-            $headers.Add('X-GitHub-Api-Version', '2022-11-28')
-            
-            if ($isRelease -ne "true") {
-                $res = Invoke-WebRequest -Headers $headers -Uri $uri
-            }
     deploy:
       name: "Deploy Packages to Nuget"
 #       if: github.event.workflow_run.conclusion == 'success' && github.event_name == 'release'      
