@@ -30,9 +30,13 @@ jobs:
             echo "uri = " 
             echo $uri
             $token = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":${{ github.TOKEN }}"))
-
+            $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+            $headers.Add('Authorization', 'Bearer $token')
+            $headers.Add('Accept', 'application/vnd.github+json')
+            $headers.Add('X-GitHub-Api-Version', '2022-11-28')
+            
             if ($isRelease -ne "true") {
-                $res = Invoke-WebRequest -Headers @{"Authorization" = "Bearer $token" "Accept" = "application/vnd.github+json" "X-GitHub-Api-Version" = "2022-11-28"} -Uri $uri
+                $res = Invoke-WebRequest -Headers $headers -Uri $uri
             }
     deploy:
       name: "Deploy Packages to Nuget"
