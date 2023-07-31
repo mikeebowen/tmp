@@ -42,7 +42,7 @@ jobs:
 
   sign:
     name: "Sign Package"
-    if: github.event.workflow_run.conclusion == 'success' && github.event_name == 'release'
+    if: github.event_name == 'release'
     needs: [pack] 
     runs-on: windows-latest
     steps: 
