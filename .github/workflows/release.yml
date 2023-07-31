@@ -9,17 +9,33 @@ permissions:
     issues: write
 
 jobs: 
+    releaseInfo: 
+      name: Check for Release
+      runs-on: ubuntu-latest
+      if: github.event.workflow_run.conclusion == 'success'
+      steps:
+        - name: Download Release Info
+          uses: actions/download-artifact@v3
+          with:
+            name: releaseInfo
+        - name: Check for Release
+          shell: pwsh
+          run: >
+            $isRelease = release-info.txt
+            $uri = [uri]::EscapeUriString("https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel")
+            echo "uri = " 
+            echo $uri
+            $token = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":${{ github.TOKEN }}"))
+            
+            if ($isRelease != "true") {
+                $res = Invoke-WebRequest -Headers @{"Authorization" = "Bearer $token" "Accept" = "application/vnd.github+json" "X-GitHub-Api-Version" = "2022-11-28"} -Uri $uri
+            }
     deploy:
       name: "Deploy Packages to Nuget"
 #       if: github.event.workflow_run.conclusion == 'success' && github.event_name == 'release'      
-      if: github.event.workflow_run.conclusion == 'success'
+      needs: [releaseInfo]
       runs-on: ubuntu-latest
       steps:
-        - name: "Log Values"
-          shell: pwsh
-          run: >
-            echo ${{ github.event_name }}
-            echo ${{ github.event | ConvertTo-Json }}
         # - name: Download and Extract Artifacts from build
         #   uses: dawidd6/action-download-artifact@v2
         #   with:
