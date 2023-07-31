@@ -20,7 +20,9 @@ jobs:
          run_id: ${{ github.event.workflow_run.id }}
          name: releaseInfo
          path: release-info.txt
-         run: >
+      - name: Check is workflow is release
+        shell: pwsh
+        run: >
             $isRelease = release-info.txt
             $uri = [uri]::EscapeUriString("https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/cancel")
             echo "isRelease = "
