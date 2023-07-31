@@ -117,7 +117,7 @@ jobs:
       - name: Get Release Info
         run: >
           echo ${{ github.event_name == 'release' }} >> release-info.txt
-      - name: Unload Release Info
+      - name: Upload Release Info
         uses: actions/upload-artifact@v3
         with:
           name: releaseInfo
