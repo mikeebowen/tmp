@@ -28,8 +28,10 @@ jobs:
             $isRelease = Get-Content -Path release-info.txt
 
             if ($isRelease -eq 'true') {
+              echo "is a release"
               echo "isRelease=true" >> $env:GITHUB_OUTPUT
             } else {
+              echo "is not a release"
               echo "isRelease=false" >> $env:GITHUB_OUTPUT
             }
     deploy:
@@ -52,7 +54,7 @@ jobs:
           uses: trstringer/manual-approval@v1
           with:
               secret: ${{ github.TOKEN }}
-              approvers: twsouthwick,tomjebo,mikeebowen
+              approvers: mikeebowen
               minimum-approvals: 1
               issue-title: "Approval for publishing to Nuget.org"
               issue-body: "Please approve or deny the deployment to Nuget.org"
