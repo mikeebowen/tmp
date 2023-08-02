@@ -109,7 +109,6 @@ jobs:
 #                ${{ github.workspace }}\unsigned\raw\*.nupkg 
   releaseInfo:
     name: Release Info
-    needs: [sign]
     runs-on: windows-latest
     steps:
       - name: Get Release Info
