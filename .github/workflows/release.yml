@@ -40,15 +40,15 @@ jobs:
       if: needs.releaseInfo.outputs.IS_RELEASE == 'true'      
       runs-on: ubuntu-latest
       steps:
-        - name: Download and Extract Artifacts from build
-          uses: dawidd6/action-download-artifact@v2
-          with:
-            run_id: ${{ github.event.workflow_run.id }}
-            name: Signed
-            path: artifacts
+#         - name: Download and Extract Artifacts from build
+#           uses: dawidd6/action-download-artifact@v2
+#           with:
+#             run_id: ${{ github.event.workflow_run.id }}
+#             name: Signed
+#             path: artifacts
 
-        - name: Setup .NET Core
-          uses: actions/setup-dotnet@v3
+#         - name: Setup .NET Core
+#           uses: actions/setup-dotnet@v3
 
         - name: Approve
           uses: trstringer/manual-approval@v1
@@ -64,6 +64,8 @@ jobs:
 
         - name: Publish NuGet package
           run: |
-            foreach($file in (Get-ChildItem "${{ github.workspace }}/artifacts" -Recurse -Include *.nupkg)) {
-                dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
-            }
+            echo "not publishing"
+#           run: |
+#             foreach($file in (Get-ChildItem "${{ github.workspace }}/artifacts" -Recurse -Include *.nupkg)) {
+#                 dotnet nuget push $file --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+#             }
